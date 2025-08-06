@@ -6,7 +6,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 
 export default defineConfig([
   {
-    ignores: ['node_modules/**', 'dist/**', 'build/**'],
+    ignores: ['node_modules/**', 'dist/**', 'build/**']
   },
   {
     ignores: ['node_modules/**', 'dist/**', 'build/**'],
@@ -15,19 +15,19 @@ export default defineConfig([
     extends: ['js/recommended'],
     languageOptions: { globals: globals.browser },
     rules: {
-      'prettier/prettier': 'error',
-    },
+      'prettier/prettier': 'error'
+    }
   },
   {
     files: ['**/*.json'],
     plugins: { json },
     language: 'json/json',
-    extends: ['json/recommended'],
+    extends: ['json/recommended']
   },
   {
     files: ['**/*.jsonc'],
     plugins: { json },
     language: 'json/jsonc',
-    extends: ['json/recommended'],
-  },
+    extends: ['json/recommended']
+  }
 ]);

@@ -11,7 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: isProduction ? 'bundle.[contenthash].js' : 'bundle.js',
-    clean: true,
+    clean: true
   },
   devServer: {
     static: { directory: path.resolve(__dirname, 'dist') },
@@ -19,7 +19,7 @@ module.exports = {
     open: true,
     hot: true,
     compress: true,
-    historyApiFallback: true,
+    historyApiFallback: true
   },
   module: {
     rules: [
@@ -27,35 +27,35 @@ module.exports = {
         test: /\.css$/,
         use: [
           isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-          'css-loader',
-        ],
+          'css-loader'
+        ]
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: { presets: ['@babel/preset-env'] },
-        },
+          options: { presets: ['@babel/preset-env'] }
+        }
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf)$/i,
-        type: 'asset/resource',
-      },
-    ],
+        type: 'asset/resource'
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Webpack App',
       filename: 'index.html',
-      template: './src/index.html',
+      template: './src/index.html'
     }),
     ...(isProduction
       ? [
           new MiniCssExtractPlugin({
-            filename: 'styles.[contenthash].css',
-          }),
+            filename: 'styles.[contenthash].css'
+          })
         ]
-      : []),
-  ],
+      : [])
+  ]
 };
