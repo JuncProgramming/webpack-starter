@@ -2,12 +2,16 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
-  mode: 'development',
+  mode: isProduction ? 'production' : 'development',
+  devtool: isProduction ? 'source-map' : 'eval-cheap-module-source-map',
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: isProduction ? 'bundle.[contenthash].js' : 'bundle.js',
+    clean: true,
   },
   devServer: {
     static: { directory: path.resolve(__dirname, 'dist') },
@@ -21,7 +25,10 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+          'css-loader',
+        ],
       },
       {
         test: /\.js$/,
@@ -31,6 +38,10 @@ module.exports = {
           options: { presets: ['@babel/preset-env'] },
         },
       },
+      {
+        test: /\.(png|jpe?g|gif|svg|woff2?|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   plugins: [
@@ -39,8 +50,12 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html',
     }),
-    new MiniCssExtractPlugin({
-      filename: 'styles.css',
-    }),
+    ...(isProduction
+      ? [
+          new MiniCssExtractPlugin({
+            filename: 'styles.[contenthash].css',
+          }),
+        ]
+      : []),
   ],
 };
